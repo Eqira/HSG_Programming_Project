@@ -1,2 +1,1 @@
-
-print(target_y)
+trainX
