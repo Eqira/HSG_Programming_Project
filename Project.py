@@ -1,10 +1,7 @@
 # Import necessary libraries for data manipulation and visualization
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import datetime as dt
 import pandas as pd
 import numpy as np
-import seaborn as sns
 
 # Import necessary libraries for stock data analysis
 import yfinance as yf
@@ -12,8 +9,7 @@ from yahoo_fin import stock_info as si
 
 # Import necessary libraries for building and evaluating machine learning models
 from keras.models import Sequential, load_model
-from keras.layers import LSTM, Dense, Dropout
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from keras.layers import LSTM, Dense
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from sklearn.model_selection import TimeSeriesSplit, train_test_split
 
