@@ -1,6 +1,3 @@
-### This is the main file for our project ##
-# if you have not done so yet you will need to install quandl in the Anaconda prompt with the command "anaconda install quandl"
-
 # Import necessary libraries for data manipulation and visualization
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -27,7 +24,7 @@ df2 = pd.DataFrame( si.tickers_nasdaq() )
 df3 = pd.DataFrame( si.tickers_dow() )
 df4 = pd.DataFrame( si.tickers_other() )
 
-# convert DataFrame to list, then to sets
+# Convert DataFrame to list, then to sets
 sym1 = set( symbol for symbol in df1[0].values.tolist() )
 sym2 = set( symbol for symbol in df2[0].values.tolist() )
 sym3 = set( symbol for symbol in df3[0].values.tolist() )
@@ -75,15 +72,9 @@ while True:
 ticker = yf.Ticker(ticker_input)
 df = ticker.history(period="5y")
 
-# Reorder the df so that the dates are in chronological order (i.e. 2022 -> 2017)
-df = df.iloc[::-1]
-
-# Rename the 'Close' column to 'Price'
-df = df.rename(columns={'Close': 'Price'})
-
-# Define the target (i.e. the 'Price' column) and the features (all other columns)
+# Define the target (i.e. the 'Close' column) and the features (all other columns)
 # Data processing code from:  https://www.projectpro.io/article/stock-price-prediction-using-machine-learning-project/571#:~:text=The%20idea%20is%20to%20weigh,to%20predict%20future%20stock%20prices.
-target_y = df["Price"]
+target_y = df["Close"]
 X_feat = df.iloc[:,0:3]
 
 # Split the data into training and testing sets using TimeSeriesSplit
@@ -94,14 +85,9 @@ for train_index, test_index in timesplit.split(X_feat):
     X_train, X_test = X_feat[:len(train_index)], X_feat[len(train_index): (len(train_index)+len(test_index))]
     y_train, y_test = target_y[:len(train_index)].values.ravel(), target_y[len(train_index): (len(train_index)+len(test_index))].values.ravel()
 
-# Scale the features using MinMaxScaler
-scaler = MinMaxScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-
 # Convert the training and testing sets to NumPy arrays and reshape them for use with LSTM
-trainX =np.array(X_train)
-testX =np.array(X_test)
+trainX = np.array(X_train)
+testX = np.array(X_test)
 X_train = trainX.reshape(X_train.shape[0], 1, X_train.shape[1])
 X_test = testX.reshape(X_test.shape[0], 1, X_test.shape[1])
 
@@ -117,7 +103,7 @@ history = lstm.fit(X_train, y_train,
                     epochs = 100, batch_size = 4,
                     verbose = 2, shuffle = False)
 
-# Make predictions on the testing set
+# Make predictions on the testing set 
 y_pred = lstm.predict(X_test)
 
 # Get the dates from the df dataframe
@@ -139,19 +125,19 @@ print("RSME: ", rmse)
 print("MAPE: ", mape)
 
 # Retrieve the data for the last day in the dataset
-last_day = df.iloc[0]
+last_day = df.iloc[-1]
 
 # Extract the feature values for the last day
 last_day_features = last_day[0:3]
 
-# Scale the feature values using the scaler object that was fit on the training data
-last_day_features_scaled = scaler.transform(last_day_features.values.reshape(1, -1))
-
-# Reshape the scaled feature values for use with the LSTM model
-last_day_features_scaled = last_day_features_scaled.reshape(1, 1, last_day_features.shape[0])
+# Reshape the feature values for use with the LSTM model
+last_day_features = last_day_features.values.reshape(1, 1, last_day_features.shape[0])
 
 # Use the LSTM model to make a prediction
-prediction = lstm.predict(last_day_features_scaled)
+prediction = lstm.predict(last_day_features)
 
-print(df.iloc[0])
-print(prediction)
+# Print today's stock information of the chosen stock
+print("Today's Open, High and Low of {} is {} {} and {}".format(ticker_input, df.iloc[-1]["Open"],df.iloc[-1]["High"],df.iloc[-1]["Low"]))
+
+# Print todays's predicted closing price of chosen stock
+print("The predicted closing price is: {}".format(prediction))
