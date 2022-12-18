@@ -2,25 +2,25 @@ This program predicts the development of a company’s share price (based on clo
 
 This program **predicts a company's today's closing price** using Long Short-Term Memory (LSTM) with Keras. Specifically, the code follows the subsequent steps: 
 
-  (1) First, the user is asked to input the corresponding ticker symbol of the stock to be analyzed 
+1. First, the user is asked to input the corresponding ticker symbol of the stock to be analyzed 
 
-  (2) Using Yahoo Finance, the code then retrieves five years of historical data for the selected stock which is used to train and test an LSTM model. (Welche Zeiträume werden in train und welche in test sortiert?) 
+2. Using Yahoo Finance, the code then retrieves five years of historical data for the selected stock which is used to train and test an LSTM model. (Welche Zeiträume werden in train und welche in test sortiert?) 
 
-  (3) Based on the trained model, predictions for the last x months are made, which are then plotted against the true values (welcher Zeitraum wird dargestellt?). Besides, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated and displayed to allow the user the evaluation of the model's performance. Lastly, the predicted closing price of the current day is returned, in addition to the opening as well as the high and low price of the stock.
+3. Based on the trained model, predictions for the last x months are made, which are then plotted against the true values (welcher Zeitraum wird dargestellt?). Besides, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated and displayed to allow the user the evaluation of the model's performance. Lastly, the predicted closing price of the current day is returned, in addition to the opening as well as the high and low price of the stock.
 
-(3) Lastly, the predictions are plotted against the true values (welcher Zeitraum wird dargestellt?). On top of this, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated and displayed to allow the user the evaluation of the model's performance. Based on the trained data, the predicted closing price of the current day is returned, in addition to the opening as well as the high and low price of the stock.
+3. Lastly, the predictions are plotted against the true values (welcher Zeitraum wird dargestellt?). On top of this, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated and displayed to allow the user the evaluation of the model's performance. Based on the trained data, the predicted closing price of the current day is returned, in addition to the opening as well as the high and low price of the stock.
 
 #schöner machen, output Sätze anders formulieren , auf 2 Nachkommastellen begrenzen, bei Output muss noch hin für welches Datum der closing price gilt
 
 **User Guide:**
 
-  (1) Run the code
+ 1. Run the code
   
-  (2) Input a valid ticker symbol for the stock you aim to analyze when prompted
+ 2. Input a valid ticker symbol for the stock you aim to analyze when prompted
   
-  (3) Wait for the model to be trained and predictions to be made
+ 3. Wait for the model to be trained and predictions to be made
   
-  (4) View the prediction plot and evaluation metrics as well as the estimated closing price of your selected stock 
+ 4. View the prediction plot and evaluation metrics as well as the estimated closing price of your selected stock 
 
 **Dependencies:** matplotlib yahoo_fin yfinance pandas numpy seaborn Keras scikit-learn
 
