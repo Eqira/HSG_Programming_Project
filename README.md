@@ -18,9 +18,9 @@ This program predicts a company's today's closing price using Long Short-Term Me
   (3) Wait for the model to be trained and predictions to be made
   (4) View the prediction plot and evaluation metrics as well as the estimated closing price of your selected stock 
 
-Dependencies: matplotlib yahoo_fin yfinance pandas numpy seaborn Keras scikit-learn
+**Dependencies:** matplotlib yahoo_fin yfinance pandas numpy seaborn Keras scikit-learn
 
-Tips: Make sure you have all the dependencies installed. Double-check that you have entered a valid ticker symbol.
+**Tips:** Make sure you have all the dependencies installed. Double-check that you have entered a valid ticker symbol
 
 
 ### old
