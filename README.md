@@ -1,6 +1,6 @@
 This program predicts the development of a company’s share price (based on closing prices) over the next x years using Long Short-Term Memory (LSTM) with Keras. Specifically, the code follows the subsequent steps: 
 
-This program predicts a company's today's closing price using Long Short-Term Memory (LSTM) with Keras. Specifically, the code follows the subsequent steps: 
+This program **predicts a company's today's closing price** using Long Short-Term Memory (LSTM) with Keras. Specifically, the code follows the subsequent steps: 
 
   (1) First, the user is asked to input the corresponding ticker symbol of the stock to be analyzed 
 
@@ -13,9 +13,13 @@ This program predicts a company's today's closing price using Long Short-Term Me
 #schöner machen, output Sätze anders formulieren , auf 2 Nachkommastellen begrenzen, bei Output muss noch hin für welches Datum der closing price gilt
 
 **User Guide:**
+
   (1) Run the code
+  
   (2) Input a valid ticker symbol for the stock you aim to analyze when prompted
+  
   (3) Wait for the model to be trained and predictions to be made
+  
   (4) View the prediction plot and evaluation metrics as well as the estimated closing price of your selected stock 
 
 **Dependencies:** matplotlib yahoo_fin yfinance pandas numpy seaborn Keras scikit-learn
