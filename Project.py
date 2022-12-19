@@ -1,7 +1,9 @@
-# Import necessary libraries for data manipulation and visualization
+# Import necessary libraries for data manipulation and later graphical visualization
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from tabulate import tabulate
+from datetime import date
 
 # Import necessary libraries for stock data analysis
 import yfinance as yf
@@ -87,7 +89,7 @@ testX = np.array(X_test)
 X_train = trainX.reshape(X_train.shape[0], 1, X_train.shape[1])
 X_test = testX.reshape(X_test.shape[0], 1, X_test.shape[1])
 
-#Building the LSTM Model
+# Building the LSTM Model
 lstm = Sequential()
 lstm.add(LSTM(32, input_shape=(1, trainX.shape[1]), activation="relu", return_sequences=False))
 lstm.add(Dense(1))
@@ -119,11 +121,13 @@ plt.ylabel("Stock Price in USD")
 plt.legend()
 plt.show()
 
-# Check the RMSE and MAPE values to evalute performance
+# Calculate the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) to evalute the model's performance
 rmse = mean_squared_error(y_test, y_pred, squared = False)
 mape = mean_absolute_percentage_error(y_test, y_pred)
-print("RSME: ", rmse)
-print("MAPE: ", mape)
+
+# Print both metrics rounded to two decimal places
+print("RSME: ", round(rmse,2))
+print("MAPE: ", round(mape,2))
 
 # Retrieve the data for the last day in the dataset
 last_day = df.iloc[-1]
@@ -137,8 +141,11 @@ last_day_features = last_day_features.values.reshape(1, 1, last_day_features.sha
 # Use the LSTM model to make a prediction
 prediction = lstm.predict(last_day_features)
 
-# Print today's stock information of the chosen stock
-print("Today's Open, High and Low of {} is {} {} and {}".format(ticker_input, df.iloc[-1]["Open"],df.iloc[-1]["High"],df.iloc[-1]["Low"]))
+# Create a table, which summarizes the opening, high, low, and the predicted closing price of the selected stock 
+# All numbers are rounded to two decimal places
+table = [['Open', 'High', 'Low', 'Predicted Closing Price Today'], [str(round(df.iloc[-1]["Open"],2)) + '$', str(round(df.iloc[-1]["High"],2)) + '$', str(round(df.iloc[-1]["Low"],2)) + '$', 
+                                                                    str(round(float(prediction),2)) + '$']]
 
-# Print todays's predicted closing price of chosen stock
-print("The predicted closing price is: {}".format(prediction))
+# Print the table and add a title
+print("\033[1m" + "Predicted Closing Price of the", ticker_name,"Share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
+print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
