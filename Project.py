@@ -46,10 +46,11 @@ for symbol in symbols:
 print( f'Removed {len( del_set )} unqualified stock symbols...' )
 print( f'There are {len( sav_set )} qualified stock symbols...' )
 
-#Ask user for stock input
+# Get input from the user and check for validity
 while True:
-    ticker_name = input('Which ticker do you want to predict?: ')
-    # If there was a valid input, continue.
+    # Ask user for stock input
+    ticker_name = input("Please enter the ticker of the stock, whose today's closing price you want to predict:")
+    # Check if user has entered anything at all 
     if ticker_name != '': 
         # Convert the input to uppercase and remove leading/trailing whitespace
         ticker_name = ticker_name.upper().strip()
@@ -59,11 +60,11 @@ while True:
              ticker_input = ticker_name
              break
         else: 
-            print('Please enter a valid Ticker')
+            print("Please enter a valid ticker!")
             continue
     # If the input was an empty string, ask for the name again.    
     else: 
-        print('Please enter a valid Ticker')
+        print("Please enter a valid ticker!")
         continue
 
 # Get the stock specified by the user and retrieve its opening, closing as well as high and low price for the last five years. All data is stored in variable df
