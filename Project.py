@@ -108,9 +108,14 @@ dates = df.index[len(train_index): (len(train_index)+len(test_index))]
 # Plot the predicted values against the true values
 plt.plot(dates ,y_test, label="True Value")
 plt.plot(dates, y_pred, label="LSTM Value")
-plt.title("Prediction by LSTM")
-plt.xlabel("Time Scale")
-plt.ylabel("Scaled USD")
+
+# Add a title and a subtitle to make the user know what is depicted in the figure
+plt.suptitle('Prediction by LSTM for {}'.format(ticker_name), weight='bold')
+plt.title("This figure compares the true closing prices with the ones estimated by our model", fontsize = 10, fontstyle='italic')
+
+# Add the lables for the x and y axis
+plt.xlabel("Time")
+plt.ylabel("Stock Price in USD")
 plt.legend()
 plt.show()
 
