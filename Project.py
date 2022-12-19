@@ -64,7 +64,7 @@ while True:
         print('Please enter a valid Ticker')
         continue
 
-# Get the data for the stock specified by the user
+# Get the stock specified by the user and retrieve its opening, closing as well as high and low price for the last five years. All data is stored in variable df
 ticker = yf.Ticker(ticker_input)
 df = ticker.history(period="5y")
 
