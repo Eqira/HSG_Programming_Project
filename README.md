@@ -4,7 +4,7 @@ This program **predicts a company's today's closing price** using Long Short-Ter
 
 2. Using Yahoo Finance, the code then retrieves five years of historical data for the selected stock which is used to train and test a LSTM model
 
-3. Based on the trained model, predictions for the last x months are made, which are then plotted against the true values. To allow for the user's evaluation of the model's performance, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated. Lastly, the predicted closing price of the current day is returned, in addition to the opening as well as the high and low price of the stock.
+3. Based on the trained model, predictions for the last x months are made, which are then plotted against the true values. To allow for the user's evaluation of the model's performance, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated. Lastly, the predicted closing price of the current day is returned, in addition to the opening as well as the high and low price of the stock
 
 **User Guide:**
 
