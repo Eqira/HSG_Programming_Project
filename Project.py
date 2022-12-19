@@ -142,6 +142,9 @@ last_day_features = last_day_features.values.reshape(1, 1, last_day_features.sha
 # Use the LSTM model to make a prediction
 prediction = lstm.predict(last_day_features)
 
+# Get today's date
+today = date.today()
+
 # Create a table, which summarizes the opening, high, low, and the predicted closing price of the selected stock 
 # All numbers are rounded to two decimal places
 table = [['Open', 'High', 'Low', 'Predicted Closing Price Today'], [str(round(df.iloc[-1]["Open"],2)) + '$', str(round(df.iloc[-1]["High"],2)) + '$', str(round(df.iloc[-1]["Low"],2)) + '$', 
