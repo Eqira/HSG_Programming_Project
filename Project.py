@@ -68,7 +68,7 @@ while True:
 ticker = yf.Ticker(ticker_input)
 df = ticker.history(period="5y")
 
-# Define the target (i.e. the 'Close' column) and the features (all other columns)
+# Define the target (i.e. the 'Close' column) and the features (i.e. 'Open', 'High', and 'Low' column)
 # Data processing code from:  https://www.projectpro.io/article/stock-price-prediction-using-machine-learning-project/571#:~:text=The%20idea%20is%20to%20weigh,to%20predict%20future%20stock%20prices.
 target_y = df["Close"]
 X_feat = df.iloc[:,0:3]
