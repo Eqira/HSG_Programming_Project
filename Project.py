@@ -10,10 +10,10 @@ import yfinance as yf
 from yahoo_fin import stock_info as si
 
 # Import necessary libraries for building and evaluating machine learning models
-from keras.models import Sequential, load_model
+from keras.models import Sequential
 from keras.layers import LSTM, Dense
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-from sklearn.model_selection import TimeSeriesSplit, train_test_split
+from sklearn.model_selection import TimeSeriesSplit
 
 # Gather stock symbols from major US exchanges 
 # Code taken from: https://levelup.gitconnected.com/how-to-get-all-stock-symbols-a73925c16a1b
@@ -36,7 +36,7 @@ my_list = ['W', 'R', 'P', 'Q']
 del_set = set()
 sav_set = set()
 
-# Remove unqualified stock symbols from the list
+# Remove the aforementioned unqualified stock symbols from the list (over four letters and last latter in my_list)
 for symbol in symbols:
     if len( symbol ) > 4 and symbol[-1] in my_list:
         del_set.add( symbol )
@@ -151,5 +151,5 @@ table = [['Open', 'High', 'Low', 'Predicted Closing Price Today'], [str(round(df
                                                                     str(round(float(prediction),2)) + '$']]
 
 # Print the table and add a title
-print("\033[1m" + "Predicted Closing Price of the", ticker_name,"Share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
+print("\033[1m" + "Predicted Closing Price of the", ticker_name,"share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
 print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
