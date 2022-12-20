@@ -122,7 +122,7 @@ plt.ylabel("Stock Price in USD")
 plt.legend()
 plt.show()
 
-# Calculate the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) to evalute the model's performance
+# Calculate the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) to evaluate the model's performance
 rmse = mean_squared_error(y_test, y_pred, squared = False)
 mape = mean_absolute_percentage_error(y_test, y_pred)
 
