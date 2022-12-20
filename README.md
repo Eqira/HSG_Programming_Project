@@ -1,4 +1,4 @@
-This program **predicts a company's today's closing price** using Long Short-Term Memory (LSTM) with Keras. Specifically, the code follows the subsequent steps: 
+This program **predicts a company's closing price of the day** using Long Short-Term Memory (LSTM) with Keras. Specifically, the code follows the subsequent steps: 
 
 1. First, the user is asked to input the corresponding ticker symbol of the stock to be analyzed 
 
