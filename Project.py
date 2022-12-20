@@ -49,7 +49,7 @@ print( f'There are {len( sav_set )} qualified stock symbols...' )
 # Get input from the user and check for validity
 while True:
     # Ask user for stock input
-    ticker_name = input("Please enter the ticker of the stock, whose today's closing price you want to predict:")
+    ticker_name = input("Please enter the ticker of the stock, whose closing price of the day you want to predict:")
     # Check if user has entered anything at all 
     if ticker_name != '': 
         # Convert the input to uppercase and remove leading/trailing whitespace
@@ -70,6 +70,8 @@ while True:
 # Get the stock specified by the user and retrieve its opening, closing as well as high and low price for the last five years. All data is stored in variable df
 ticker = yf.Ticker(ticker_input)
 df = ticker.history(period="5y")
+
+print(df)
 
 # Define the target (i.e. the 'Close' column) and the features (i.e. 'Open', 'High', and 'Low' column)
 # Data processing code from:  https://www.projectpro.io/article/stock-price-prediction-using-machine-learning-project/571#:~:text=The%20idea%20is%20to%20weigh,to%20predict%20future%20stock%20prices.
@@ -105,6 +107,62 @@ history = lstm.fit(X_train, y_train,
 # Make predictions on the testing set 
 y_pred = lstm.predict(X_test)
 
+# Retrieve the data for the last day in the dataset
+last_day = df.iloc[-1]
+
+# Extract the feature values for the last day
+last_day_features = last_day[0:3]
+
+# Reshape the feature values for use with the LSTM model
+last_day_features = last_day_features.values.reshape(1, 1, last_day_features.shape[0])
+
+# Use the LSTM model to make a prediction
+prediction_model = lstm.predict(last_day_features)
+
+# Get today's date
+today = date.today()
+
+# Create a table, which summarizes the opening, high, low, and the predicted closing price of the selected stock 
+# All numbers are rounded to two decimal places
+table_inputs = [['Open', 'High', 'Low'], [str(round(df.iloc[-1]["Open"],2)) + '$', str(round(df.iloc[-1]["High"],2)) + '$', str(round(df.iloc[-1]["Low"],2)) + '$']]
+
+# Print the table and add a title
+print("\033[1m" + "Predicted Closing Price of the", ticker_name,"share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
+print(tabulate(table_inputs, headers='firstrow', tablefmt='fancy_grid'))
+
+# Ask the user to predict the closing price of the selected stock for the day
+while True:
+    # Ask user for their predicted closing price
+    prediction_user_input = input("Based of the given Open, High and Low of the stock, predict the closing price: ")
+
+      # Check if the user input is a valid float
+    try:
+     prediction_user = float(prediction_user_input)
+     break
+    except ValueError:
+        print("Invalid input. Please enter a valid number for the closing price.")
+
+# Calculate the distance of the user prediction and the model's prediction from the actual closing price
+user_distance = abs(last_day["Close"] - prediction_user)
+model_distance_distance = abs(last_day["Close"] - prediction_model)
+
+# Create a table, which summarizes the user's prediction, the model's prediction and the actual closing price
+# All numbers are rounded to two decimal places
+table_predictions = [["Your prediction", "Model's prediction", 'Actual closing price'], [str(round(prediction_user,2)) + '$', str(round(prediction_model.item(),2)) + '$', str(round(df.iloc[-1]["Close"],2)) + '$']]
+
+# Print the table and add a title
+print("\033[1m" + "Summary of predictions and actual closing price of", ticker_name,"share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
+print(tabulate(table_predictions, headers='firstrow', tablefmt='fancy_grid'))
+
+# Determine which prediction is closer to the actual closing price
+if user_distance < model_distance_distance:
+  print("Your prediction is closer to the actual closing price of!")
+elif model_distance_distance < user_distance:
+  print("The model's prediction is closer to the actual closing price.")
+else:
+  print("Both predictions are equally distant from the actual closing price.")
+
+#################################### Visualisation #####################################
 # Get the dates from the df dataframe
 dates = df.index[len(train_index): (len(train_index)+len(test_index))]
 
@@ -129,27 +187,3 @@ mape = mean_absolute_percentage_error(y_test, y_pred)
 # Print both metrics rounded to two decimal places
 print("RSME: ", round(rmse,2))
 print("MAPE: ", round(mape,2))
-
-# Retrieve the data for the last day in the dataset
-last_day = df.iloc[-1]
-
-# Extract the feature values for the last day
-last_day_features = last_day[0:3]
-
-# Reshape the feature values for use with the LSTM model
-last_day_features = last_day_features.values.reshape(1, 1, last_day_features.shape[0])
-
-# Use the LSTM model to make a prediction
-prediction = lstm.predict(last_day_features)
-
-# Get today's date
-today = date.today()
-
-# Create a table, which summarizes the opening, high, low, and the predicted closing price of the selected stock 
-# All numbers are rounded to two decimal places
-table = [['Open', 'High', 'Low', 'Predicted Closing Price Today'], [str(round(df.iloc[-1]["Open"],2)) + '$', str(round(df.iloc[-1]["High"],2)) + '$', str(round(df.iloc[-1]["Low"],2)) + '$', 
-                                                                    str(round(float(prediction),2)) + '$']]
-
-# Print the table and add a title
-print("\033[1m" + "Predicted Closing Price of the", ticker_name,"share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
-print(tabulate(table, headers='firstrow', tablefmt='fancy_grid'))
