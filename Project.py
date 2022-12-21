@@ -171,7 +171,7 @@ elif model_distance_distance < user_distance:
 else:
   print("\nBoth predictions are equally distant from the actual closing price.\n")
 
-#################################### Visualisation #####################################
+#################################### Visualization #####################################
 # Get the dates from the df dataframe
 dates = df.index[len(train_index): (len(train_index)+len(test_index))]
 
