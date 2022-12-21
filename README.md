@@ -6,9 +6,9 @@ The code specifically follows the subsequent steps:
 
 2. Using Yahoo Finance, the code then retrieves five years of historical data for the selected stock which is used to train and test an LSTM model
 
-3. Based on the opening, low, and high price of the last trading day, the trained model subsequently predicts the stock's closing price, which is compared to the user's prediction and the actual closing price. 
+3. Based on the opening, low, and high price of the last trading day, the trained model subsequently predicts the stock's closing price, which is compared to the user's prediction and the actual closing price
 
-4. Lastly, the model's predictions for the last five months are plotted against the true values. To allow for the user's evaluation of the model's performance, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated.
+4. Lastly, the model's predictions for the last five months are plotted against the true values. To allow for the user's evaluation of the model's performance, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated
 
 **User Guide:**
 
