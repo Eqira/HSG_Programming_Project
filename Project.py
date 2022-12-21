@@ -22,7 +22,7 @@ df2 = pd.DataFrame( si.tickers_nasdaq() )
 df3 = pd.DataFrame( si.tickers_dow() )
 df4 = pd.DataFrame( si.tickers_other() )
 
-# Convert DataFrame to list, then to sets
+# Convert dataframe to list, then to sets
 sym1 = set( symbol for symbol in df1[0].values.tolist() )
 sym2 = set( symbol for symbol in df2[0].values.tolist() )
 sym3 = set( symbol for symbol in df3[0].values.tolist() )
@@ -45,11 +45,12 @@ for symbol in symbols:
 
 print( f'Removed {len( del_set )} unqualified stock symbols...' )
 print( f'There are {len( sav_set )} qualified stock symbols...' )
+print("\n")
 
 # Get input from the user and check for validity
 while True:
     # Ask user for stock input
-    ticker_name = input("Please enter the ticker of the stock, whose closing price of the day you want to predict:")
+    ticker_name = input("Please enter the ticker of the stock you desire to analyze.")
     # Check if user has entered anything at all 
     if ticker_name != '': 
         # Convert the input to uppercase and remove leading/trailing whitespace
@@ -62,7 +63,7 @@ while True:
         else: 
             print("Please enter a valid ticker!")
             continue
-    # If the input was an empty string, ask for the name again.    
+    # If the input was an empty string, ask for the name again    
     else: 
         print("Please enter a valid ticker!")
         continue
@@ -71,7 +72,11 @@ while True:
 ticker = yf.Ticker(ticker_input)
 df = ticker.history(period="5y")
 
-print(df)
+# Get an overivew of the dataframe df: Open, High, Low, Close, Volume, Dividends, and Stock Splits for each of the last five days is shown
+print("\n\033[1m" + "\nSummary of the", ticker_name,"share for the last five days", "\033[0m")
+print(tabulate(df.tail(), headers='keys', tablefmt='fancy_grid'))
+print("\n")
+# Alternative: print(tabulate(df.tail(), headers='firstrow', tablefmt='fancy_grid'))
 
 # Define the target (i.e. the 'Close' column) and the features (i.e. 'Open', 'High', and 'Low' column)
 # Data processing code from:  https://www.projectpro.io/article/stock-price-prediction-using-machine-learning-project/571#:~:text=The%20idea%20is%20to%20weigh,to%20predict%20future%20stock%20prices.
@@ -102,7 +107,7 @@ lstm.summary()
 # Fit the model to the training data
 history = lstm.fit(X_train, y_train,
                     epochs = 100, batch_size = 4,
-                    verbose = 2, shuffle = False)
+                    verbose = 0, shuffle = False)
 
 # Make predictions on the testing set 
 y_pred = lstm.predict(X_test)
@@ -127,20 +132,24 @@ today = date.today()
 table_inputs = [['Open', 'High', 'Low'], [str(round(df.iloc[-1]["Open"],2)) + '$', str(round(df.iloc[-1]["High"],2)) + '$', str(round(df.iloc[-1]["Low"],2)) + '$']]
 
 # Print the table and add a title
-print("\033[1m" + "Predicted Closing Price of the", ticker_name,"share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
+print("\n")
+print("\033[1m" + "Open, High, and Low of the", ticker_name,"share as of", df.index[-1].strftime("%B %d, %Y"), "\033[0m")
 print(tabulate(table_inputs, headers='firstrow', tablefmt='fancy_grid'))
 
 # Ask the user to predict the closing price of the selected stock for the day
-while True:
-    # Ask user for their predicted closing price
-    prediction_user_input = input("Based of the given Open, High and Low of the stock, predict the closing price: ")
+print("\nCan you beat the model in predicting the closing price of the {} share?".format(ticker_name))
+print("You are just given its Open, High, and Low as of {}, which you can find in the table above\n".format(df.index[-1].strftime("%B %d, %Y")))
 
-      # Check if the user input is a valid float
+while True:
+    # Ask user for his/her predicted closing price
+    prediction_user_input = input("Please enter your expected closing price of the {} share as of {} in USD:".format(ticker_name, df.index[-1].strftime("%B %d, %Y")))
+
+    # Check if the user's input is a valid float
     try:
      prediction_user = float(prediction_user_input)
      break
     except ValueError:
-        print("Invalid input. Please enter a valid number for the closing price.")
+        print("Invalid input. Please enter a valid number for your predicted closing price!")
 
 # Calculate the distance of the user prediction and the model's prediction from the actual closing price
 user_distance = abs(last_day["Close"] - prediction_user)
@@ -151,16 +160,16 @@ model_distance_distance = abs(last_day["Close"] - prediction_model)
 table_predictions = [["Your prediction", "Model's prediction", 'Actual closing price'], [str(round(prediction_user,2)) + '$', str(round(prediction_model.item(),2)) + '$', str(round(df.iloc[-1]["Close"],2)) + '$']]
 
 # Print the table and add a title
-print("\033[1m" + "Summary of predictions and actual closing price of", ticker_name,"share as of Today,", today.strftime("%B %d %Y"), "\033[0m")
+print("\n\033[1m" + "Summary of predictions and actual closing price of", ticker_name,"share as of", df.index[-1].strftime("%B %d, %Y"), "\033[0m")
 print(tabulate(table_predictions, headers='firstrow', tablefmt='fancy_grid'))
 
 # Determine which prediction is closer to the actual closing price
 if user_distance < model_distance_distance:
-  print("Your prediction is closer to the actual closing price of!")
+  print("\nYour prediction is closer to the actual closing price than that of the model. Well done!\n")
 elif model_distance_distance < user_distance:
-  print("The model's prediction is closer to the actual closing price.")
+  print("\nThe model's prediction is closer to the actual closing price.\n")
 else:
-  print("Both predictions are equally distant from the actual closing price.")
+  print("\nBoth predictions are equally distant from the actual closing price.\n")
 
 #################################### Visualisation #####################################
 # Get the dates from the df dataframe
@@ -172,7 +181,7 @@ plt.plot(dates, y_pred, label="LSTM Value")
 
 # Add a title and a subtitle to make the user know what is depicted in the figure
 plt.suptitle('Prediction by LSTM for {}'.format(ticker_name), weight='bold')
-plt.title("This figure compares the true closing prices with the ones estimated by our model", fontsize = 10, fontstyle='italic')
+plt.title("This figure compares the true closing price with the one estimated by the model", fontsize = 10, fontstyle='italic')
 
 # Add the lables for the x and y axis
 plt.xlabel("Time")
