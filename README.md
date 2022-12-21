@@ -10,7 +10,7 @@ The code specifically follows the subsequent steps:
 
 4. Lastly, the model's predictions for the last five months are plotted against the true values. To allow for the user's evaluation of the model's performance, the Root Mean Squared Error (RMSE) and the Mean Absolute Percentage Error (MAPE) are calculated
 
-**User Guide:**
+**Quick User Guide:**
 
  1. Run the code
   
