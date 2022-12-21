@@ -176,6 +176,7 @@ else:
 dates = df.index[len(train_index): (len(train_index)+len(test_index))]
 
 # Plot the predicted values against the true values
+plt.rcParams['figure.dpi'] = 110
 plt.plot(dates ,y_test, label="True Value")
 plt.plot(dates, y_pred, label="LSTM Value")
 
