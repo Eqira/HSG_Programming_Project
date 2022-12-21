@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from tabulate import tabulate
-from datetime import date
+import datetime
 import pytz
 import holidays
 
@@ -101,7 +101,7 @@ if afterHours_boolean == False:
     df = df[:len(df)-1]
 
 # Get an overivew of the dataframe df: Open, High, Low, Close, Volume, Dividends, and Stock Splits for each of the last five days is shown
-print("\n\033[1m" + "\nSummary of the", ticker_name,"share for the last five days", "\033[0m")
+print("\n\033[1m" + "\nSummary of the", ticker_name,"share for the last days", "\033[0m")
 print(tabulate(df.tail(), headers='keys', tablefmt='fancy_grid'))
 print("\n")
 
