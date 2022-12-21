@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from tabulate import tabulate
 from datetime import date
+import pytz
+import holidays
 
 # Import necessary libraries for stock data analysis
 import yfinance as yf
@@ -72,11 +74,36 @@ while True:
 ticker = yf.Ticker(ticker_input)
 df = ticker.history(period="5y")
 
+# Function afterHours from: https://www.reddit.com/r/algotrading/comments/9x9xho/python_code_to_check_if_market_is_open_in_your/
+tz = pytz.timezone('US/Eastern')
+us_holidays = holidays.US()
+def afterHours(now = None):
+        if not now:
+            now = datetime.datetime.now(tz)
+        openTime = datetime.time(hour = 9, minute = 30, second = 0)
+        closeTime = datetime.time(hour = 16, minute = 0, second = 0)
+        # If a holiday
+        if now.strftime('%Y-%m-%d') in us_holidays:
+            return True
+        # If before 0930 or after 1600
+        if (now.time() < openTime) or (now.time() > closeTime):
+            return True
+        # If it's a weekend
+        if now.date().weekday() > 4:
+            return True
+
+        return False
+    
+# Check if user is running the code when the US stock exchange is open. If the US stock exchange is open when running the code, 
+# there is no closing price yet to which the model's and the user's prediction can be compared. In this case the closing price from the previous trading day is used for prediction 
+afterHours_boolean = afterHours()
+if afterHours_boolean == False:
+    df = df[:len(df)-1]
+
 # Get an overivew of the dataframe df: Open, High, Low, Close, Volume, Dividends, and Stock Splits for each of the last five days is shown
 print("\n\033[1m" + "\nSummary of the", ticker_name,"share for the last five days", "\033[0m")
 print(tabulate(df.tail(), headers='keys', tablefmt='fancy_grid'))
 print("\n")
-# Alternative: print(tabulate(df.tail(), headers='firstrow', tablefmt='fancy_grid'))
 
 # Define the target (i.e. the 'Close' column) and the features (i.e. 'Open', 'High', and 'Low' column)
 # Data processing code from:  https://www.projectpro.io/article/stock-price-prediction-using-machine-learning-project/571#:~:text=The%20idea%20is%20to%20weigh,to%20predict%20future%20stock%20prices.
@@ -123,9 +150,6 @@ last_day_features = last_day_features.values.reshape(1, 1, last_day_features.sha
 
 # Use the LSTM model to make a prediction
 prediction_model = lstm.predict(last_day_features)
-
-# Get today's date
-today = date.today()
 
 # Create a table, which summarizes the opening, high, low, and the predicted closing price of the selected stock 
 # All numbers are rounded to two decimal places
@@ -195,5 +219,5 @@ rmse = mean_squared_error(y_test, y_pred, squared = False)
 mape = mean_absolute_percentage_error(y_test, y_pred)
 
 # Print both metrics rounded to two decimal places
-print("RSME: ", round(rmse,2))
+print("RMSE: ", round(rmse,2))
 print("MAPE: ", round(mape,2))
