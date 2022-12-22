@@ -219,5 +219,6 @@ rmse = mean_squared_error(y_test, y_pred, squared = False)
 mape = mean_absolute_percentage_error(y_test, y_pred)
 
 # Print both metrics rounded to two decimal places
+print("The model's accuracy can be described with following measures:")
 print("RMSE: ", round(rmse,2))
 print("MAPE: ", round(mape,2))
