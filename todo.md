@@ -1,1 +1,0 @@
-Ideate for the project.
