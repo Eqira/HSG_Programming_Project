@@ -24,6 +24,6 @@ The code specifically follows the subsequent steps:
  
  6. View the model's prediction plot for the last five months and the corresponding evaluation metrics 
 
-**Dependencies:** matplotlib, yahoo_fin, yfinance, pandas, numpy, seaborn, Keras, scikit-learn, tabulate, datetime
+**Dependencies:** matplotlib, pandas, numpy, tabulate, datetime, pytz, holidays, yfinance, yahoo_fin, keras, sklearn
 
 **Tips:** Make sure you have all the dependencies installed. Double-check that you have entered a valid ticker symbol
