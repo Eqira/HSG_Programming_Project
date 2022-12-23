@@ -77,21 +77,24 @@ df = ticker.history(period="5y")
 # Function afterHours from: https://www.reddit.com/r/algotrading/comments/9x9xho/python_code_to_check_if_market_is_open_in_your/
 tz = pytz.timezone('US/Eastern')
 us_holidays = holidays.US()
+
+# Function checks if US stock exchange is open or not: It returns True (False) if the stock exchange is closed (open)
 def afterHours(now = None):
         if not now:
             now = datetime.datetime.now(tz)
+        # Define the opening and closing time of the stock exchange    
         openTime = datetime.time(hour = 9, minute = 30, second = 0)
         closeTime = datetime.time(hour = 16, minute = 0, second = 0)
-        # If a holiday
+        # If a holiday, True is returned
         if now.strftime('%Y-%m-%d') in us_holidays:
             return True
-        # If before 0930 or after 1600
+        # If before 09:30 or after 16:00 (outside the stock exchange hours), True is returned
         if (now.time() < openTime) or (now.time() > closeTime):
             return True
-        # If it's a weekend
+        # If it's a weekend, True is returned
         if now.date().weekday() > 4:
             return True
-
+        
         return False
     
 # Check if user is running the code when the US stock exchange is open. If the US stock exchange is open when running the code, 
