@@ -22,16 +22,14 @@ from sklearn.model_selection import TimeSeriesSplit
 df1 = pd.DataFrame( si.tickers_sp500() )
 df2 = pd.DataFrame( si.tickers_nasdaq() )
 df3 = pd.DataFrame( si.tickers_dow() )
-df4 = pd.DataFrame( si.tickers_other() )
 
 # Convert dataframe to list, then to sets
 sym1 = set( symbol for symbol in df1[0].values.tolist() )
 sym2 = set( symbol for symbol in df2[0].values.tolist() )
 sym3 = set( symbol for symbol in df3[0].values.tolist() )
-sym4 = set( symbol for symbol in df4[0].values.tolist() )
 
-# Join the four sets into one. Because it is a set, there will be no duplicate symbols
-symbols = set.union( sym1, sym2, sym3, sym4 )
+# Join the three sets into one. Because it is a set, there will be no duplicate symbols
+symbols = set.union( sym1, sym2, sym3 )
 
 # Some stocks are five characters. Those stocks with the suffixes listed below are not of interest
 my_list = ['W', 'R', 'P', 'Q']
